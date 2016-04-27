@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "karma start test/config/karma.conf.js"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.3.12",
+    "browser-sync": "^2.12.5",
+    "gulp": "^3.9.1",
+    "karma": "^0.10.0"
+  }
+}

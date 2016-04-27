@@ -1,0 +1,28 @@
+{
+  "name": "known-issues",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Roberto Rodriguez <manufacturedba@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5",
+    "todomvc-common": "git+ssh://git@github.com/tastejs/todomvc-common#^1.0.2",
+    "todomvc-app-css": "git+ssh://git@github.com/tastejs/todomvc-app-css#^1.0.3",
+    "angular-route": "^1.5.5",
+    "angular-resource": "^1.5.5",
+    "font-awesome": "^4.6.1",
+    "paper-toast": "PolymerElements/paper-toast#^1.2.2"
+  }
+}
