@@ -6,7 +6,7 @@
  * - exposes the model to the template and provides event handlers
  */
 angular.module('todomvc')
-  .controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store) {
+  .controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store, toastSrvc) {
     'use strict';
 
     var todos = $scope.todos = store.todos;
@@ -59,9 +59,9 @@ angular.module('todomvc')
       }
 
       $scope.saving = true;
+      toastSrvc.open('Created New Todo ' + $scope.newTodo.title);
       store.insert(newTodo)
         .then(function success(res) {
-          console.log(res);
           $scope.newTodo = {};
         })
         .finally(function() {
@@ -98,7 +98,9 @@ angular.module('todomvc')
         $scope.editedTodo = null;
         return;
       }
-
+      
+      toastSrvc.open('Updated todo item ' + todo.title);
+      
       store[todo.title ? 'put' : 'delete'](todo)
         .then(function success() { }, function error() {
           todo.title = $scope.originalTodo.title;
