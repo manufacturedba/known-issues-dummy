@@ -6,17 +6,15 @@
  * - exposes the model to the template and provides event handlers
  */
 angular.module('todomvc')
-  .controller('TodoCtrl', ['$scope', '$routeParams', '$filter', 'store', 'toastSrvc', function TodoCtrl($scope, $routeParams, $filter, store, toast) {
+  .controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store) {
     'use strict';
 
     var todos = $scope.todos = store.todos;
 
-    $scope.newTodo = {
-      label: ''
-    };
-    
+    $scope.newTodo = {};
     $scope.editedTodo = null;
-    $scope.showExtra = false;
+    
+    $scope.extraOptions = false;
     
     $scope.$watch('todos', function() {
       $scope.remainingCount = $filter('filter')(todos, { completed: false }).length;
@@ -32,23 +30,27 @@ angular.module('todomvc')
           { completed: true } : {};
     });
     
-    $scope.toggleExtra = function () {
-      $scope.showExtra = !$scope.showExtra;
-    }
+    $scope.displayOptions = function() {
+      $scope.extraOptions = !$scope.extraOptions;
+    };
     
     function trim(text) {
       if (text) {
         return text.trim();
       }
-      return text || '';
+      
+      return '';
     }
     
     $scope.addTodo = function() {
       var newTodo = {
         title: trim($scope.newTodo.title),
         description: trim($scope.newTodo.description),
-        label: trim($scope.newTodo.label),
-        app: trim($scope.newTodo.label),
+        creationDate: new Date().getTime(),
+        modifiedDate: new Date().getTime(),
+        foundInApp: trim($scope.newTodo.foundInApp),
+        foundinAppVersion: trim($scope.newTodo.foundinAppVersion),
+        verified: false,
         completed: false
       };
 
@@ -58,8 +60,9 @@ angular.module('todomvc')
 
       $scope.saving = true;
       store.insert(newTodo)
-        .then(function success() {
-          $scope.newTodo = '';
+        .then(function success(res) {
+          console.log(res);
+          $scope.newTodo = {};
         })
         .finally(function() {
           $scope.saving = false;
@@ -71,7 +74,7 @@ angular.module('todomvc')
       // Clone the original todo to restore it on demand.
       $scope.originalTodo = angular.extend({}, todo);
     };
-
+    
     $scope.saveEdits = function(todo, event) {
       // Blur events are automatically triggered after the form submit event.
       // This does some unfortunate logic handling to prevent saving twice.
@@ -89,7 +92,8 @@ angular.module('todomvc')
       }
 
       todo.title = todo.title.trim();
-
+      todo.modifiedDate = new Date().getTime();
+      
       if (todo.title === $scope.originalTodo.title) {
         $scope.editedTodo = null;
         return;
@@ -140,4 +144,4 @@ angular.module('todomvc')
         }
       });
     };
-  }]);
+  });

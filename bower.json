@@ -23,6 +23,7 @@
     "angular-route": "^1.5.5",
     "angular-resource": "^1.5.5",
     "font-awesome": "^4.6.1",
-    "paper-toast": "PolymerElements/paper-toast#^1.2.2"
+    "paper-toast": "PolymerElements/paper-toast#^1.2.2",
+    "moment": "^2.13.0"
   }
 }

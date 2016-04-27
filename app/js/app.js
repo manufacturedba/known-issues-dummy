@@ -25,6 +25,19 @@ angular.module('todomvc', ['ngRoute', 'ngResource'])
 
 		$routeProvider
 			.when('/', routeConfig)
+      .when('/detail/:id', {
+        controller: 'TodoDetailCtrl',
+        templateUrl: 'todomvc-detail.html',
+        resolve: {
+				store: function (todoStorage) {
+					// Get the correct module (API or localStorage).
+					return todoStorage.then(function (module) {
+						module.get(); // Fetch the todo records in the background.
+						return module;
+					});
+				}
+			}
+      })
 			.when('/:status', routeConfig)
 			.otherwise({
 				redirectTo: '/'
