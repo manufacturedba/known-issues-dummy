@@ -45,7 +45,7 @@ angular.module('todomvc')
     $scope.addTodo = function() {
       var newTodo = {
         title: trim($scope.newTodo.title),
-        description: trim($scope.newTodo.description),
+        description: trim(document.querySelector('#new-todo-textarea').value.replace(/\n/g, "<br />")),
         creationDate: new Date().getTime(),
         modifiedDate: new Date().getTime(),
         foundInApp: document.querySelector('#todo-form-dropdown-app').value,

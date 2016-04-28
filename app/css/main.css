@@ -27,6 +27,16 @@
   color: #777;
 }
 
+#todo-list li label {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#todo-form .todo-edit textarea {
+  font-size: 24px;
+}
+
 paper-dropdown-menu-light {
   width: 100%;
 }

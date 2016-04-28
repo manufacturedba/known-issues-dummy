@@ -61,20 +61,18 @@ if ('serviceWorker' in navigator) {
   <ng-view></ng-view>
   
   <script type="text/ng-template" id="todomvc-detail.html">
-    <p>
-      <a href="/#/">
-        <i class="fa fa-arrow-left fa-2x"></i>
-      </a>
-    </p>
+    <a href="/#/">
+      <i class="fa fa-arrow-left fa-2x"></i>
+    </a>
     <p>
       <h1>{{::todo.title}}</h1>
-      <h2 ng-class="{'text-muted': !todo.description}">{{::todo.description || "No Description"}}</h2>
+      <h2 ng-class="{'text-muted': !todo.description}" data-ng-bind-html="myContent"></h2>
       <h2 ng-class="{'text-muted': !todo.foundInApp}">{{::todo.foundInApp || "No App Specified"}}</h2>
       <h2 ng-show="todo.foundInAppVersion">{{::todo.foundInAppVersion}}</h2>
       <h2 ng-show="todo.verified">Verified</h2>
       <h2 class="text-muted" ng-hide="todo.verified">Not Verified</h2>
-      <h2 ng-class="{'text-muted': !todo.creationDate}">Creation Date {{::todo.creationDate | date : 'medium'}}</h2>
-      <h2 ng-class="{'text-muted': !todo.modifiedDate}">Modified Date {{::todo.modifiedDate | date : 'medium'}}</h2>
+      <h3 ng-class="{'text-muted': !todo.creationDate}">Creation Date {{::todo.creationDate | date : 'medium'}}</h3>
+      <h3 ng-class="{'text-muted': !todo.modifiedDate}">Modified Date {{::todo.modifiedDate | date : 'medium'}}</h3>
       Verify <paper-toggle-button></paper-toggle-button>
     </p>
   </script>
@@ -82,7 +80,7 @@ if ('serviceWorker' in navigator) {
   <script type="text/ng-template" id="todomvc-index.html">
     <section class="todoapp">
       <header id="header">
-        <h1>Known Issues</h1>
+        <h1>Known Issues Form</h1>
           <button id="new-todo-button" ng-click="toggleOptions()">
             <i ng-hide="showExtra" class="fa fa-lg fa-arrow-right"></i>
             <i ng-show="showExtra" class="fa fa-lg fa-arrow-down"></i>
@@ -91,7 +89,7 @@ if ('serviceWorker' in navigator) {
           <input type="submit" hidden>
           <input id="new-todo" placeholder="What's your issue?" ng-model="newTodo.title" ng-disabled="saving" autofocus>
           <div ng-show="showExtra" class="extra-options">
-            <input id="new-todo" placeholder="Description" ng-model="newTodo.description" ng-disabled="saving">
+            <paper-textarea class="todo-edit" rows="3" id="new-todo-textarea" placeholder="Description"></paper-textarea>
             <paper-dropdown-menu-light id="todo-form-dropdown-app" class="todo-form-dropdown" label="App">
               <paper-listbox class="dropdown-content">
                 <paper-item>CBK Top 25</paper-item>
