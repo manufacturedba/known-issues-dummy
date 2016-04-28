@@ -16,6 +16,7 @@
       display: none;
     }
   </style>
+  <script type="text/javascript" src="bower_components/axios/dist/axios.js"></script>
   <script type="text/javascript">
  /*
 *
@@ -45,7 +46,9 @@ if ('serviceWorker' in navigator) {
   }).then(function(reg) {
     console.log('Service Worker is ready :^)', reg);
     reg.pushManager.subscribe({userVisibleOnly: true}).then(function(sub) {
-      console.log('endpoint:', sub.endpoint);
+      axios.post('http://localhost:7777/register-notification', {
+        endpoint: sub.endpoint
+      })
     });
   }).catch(function(error) {
     console.log('Service Worker error :^(', error);
@@ -72,6 +75,7 @@ if ('serviceWorker' in navigator) {
       <h2 class="text-muted" ng-hide="todo.verified">Not Verified</h2>
       <h2 ng-class="{'text-muted': !todo.creationDate}">Creation Date {{::todo.creationDate | date : 'medium'}}</h2>
       <h2 ng-class="{'text-muted': !todo.modifiedDate}">Modified Date {{::todo.modifiedDate | date : 'medium'}}</h2>
+      Verify <paper-toggle-button></paper-toggle-button>
     </p>
   </script>
   
@@ -88,7 +92,7 @@ if ('serviceWorker' in navigator) {
           <input id="new-todo" placeholder="What's your issue?" ng-model="newTodo.title" ng-disabled="saving" autofocus>
           <div ng-show="showExtra" class="extra-options">
             <input id="new-todo" placeholder="Description" ng-model="newTodo.description" ng-disabled="saving">
-            <paper-dropdown-menu-light id="todo-form-dropdown" label="App" ng-model="newTodo.foundinApp">
+            <paper-dropdown-menu-light id="todo-form-dropdown-app" class="todo-form-dropdown" label="App">
               <paper-listbox class="dropdown-content">
                 <paper-item>CBK Top 25</paper-item>
                 <paper-item>WeatherNation</paper-item>
@@ -96,7 +100,14 @@ if ('serviceWorker' in navigator) {
                 <paper-item>Vevo</paper-item>
               </paper-listbox>
           </paper-dropdown-menu-light>
-            <input id="new-todo" placeholder="App Version" ng-model="newTodo.foundInAppVersion" ng-disabled="saving">
+          <paper-dropdown-menu-light id="todo-form-dropdown-version" class="todo-form-dropdown" label="Version">
+              <paper-listbox class="dropdown-content">
+                <paper-item>1.1.2</paper-item>
+                <paper-item>2.0.1</paper-item>
+                <paper-item>2.0.2</paper-item>
+                <paper-item>2.1.0</paper-item>
+              </paper-listbox>
+          </paper-dropdown-menu-light>
           </div>
         </form>
       </header>
@@ -127,7 +138,7 @@ if ('serviceWorker' in navigator) {
             <a ng-class="{selected: status == ''} " href="#/">All</a>
           </li>
           <li>
-            <a ng-class="{selected: status == 'active'}" href="#/active">Active</a>
+            <a ng-class="{selected: status == 'verified'}" href="#/verified">Verified</a>
           </li>
           <li>
             <a ng-class="{selected: status == 'completed'}" href="#/completed">Completed</a>

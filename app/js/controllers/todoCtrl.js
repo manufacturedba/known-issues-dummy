@@ -25,8 +25,8 @@ angular.module('todomvc')
     // Monitor the current route for changes and adjust the filter accordingly.
     $scope.$on('$routeChangeSuccess', function() {
       var status = $scope.status = $routeParams.status || '';
-      $scope.statusFilter = (status === 'active') ?
-        { completed: false } : (status === 'completed') ?
+      $scope.statusFilter = (status === 'verified') ?
+        { verified: true } : (status === 'completed') ?
           { completed: true } : {};
     });
     
@@ -48,8 +48,8 @@ angular.module('todomvc')
         description: trim($scope.newTodo.description),
         creationDate: new Date().getTime(),
         modifiedDate: new Date().getTime(),
-        foundInApp: document.querySelector('paper-dropdown-menu-light').value,
-        foundinAppVersion: trim($scope.newTodo.foundinAppVersion),
+        foundInApp: document.querySelector('#todo-form-dropdown-app').value,
+        foundinAppVersion: document.querySelector('#todo-form-dropdown-version').value,
         verified: false,
         completed: false
       };

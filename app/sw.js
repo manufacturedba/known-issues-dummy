@@ -35,41 +35,58 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Push message', event);
 
-  var title = 'Push message';
+  fetch('http://localhost:7777/showNotification').then(function(response) {
+    if (response.status !== 200) {
+      // Either show a message to the user explaining the error  
+      // or enter a generic message and handle the
+      // onnotificationclick event to direct the user to a web page  
+      console.log('Looks like there was a problem. Status Code: ' + response.status);
+      throw new Error();
+    }
 
-  event.waitUntil(
-    self.registration.showNotification(title, {
-      'body': 'The Message',
-      'icon': 'images/icon.png'
-    }));
+    // Examine the text in the response  
+    return response.json().then(function(data) {
+      if (data.error || !data.notification) {
+        console.error('The API returned an error.', data.error);
+        throw new Error();
+      }
+      
+      var title = 'Issue Change';
+      var message = data.notification.message;
+
+      return self.registration.showNotification(title, {
+        body: message
+      });
+    });
+  });
 });
 
-self.addEventListener('notificationclick', function(event) {
-  console.log('Notification click: tag', event.notification.tag);
-  // Android doesn't close the notification when you click it
-  // See http://crbug.com/463146
-  event.notification.close();
+  self.addEventListener('notificationclick', function(event) {
+    console.log('Notification click: tag', event.notification.tag);
+    // Android doesn't close the notification when you click it
+    // See http://crbug.com/463146
+    event.notification.close();
 
-  var url = 'https://youtu.be/gYMkEMCHtJ4';
-  // Check if there's already a tab open with this URL.
-  // If yes: focus on the tab.
-  // If no: open a tab with the URL.
-  event.waitUntil(
-    clients.matchAll({
-      type: 'window'
-    })
-    .then(function(windowClients) {
-      console.log('WindowClients', windowClients);
-      for (var i = 0; i < windowClients.length; i++) {
-        var client = windowClients[i];
-        console.log('WindowClient', client);
-        if (client.url === url && 'focus' in client) {
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow(url);
-      }
-    })
-  );
-});
+    var url = 'http://localhost:3000';
+    // Check if there's already a tab open with this URL.
+    // If yes: focus on the tab.
+    // If no: open a tab with the URL.
+    event.waitUntil(
+      clients.matchAll({
+        type: 'window'
+      })
+        .then(function(windowClients) {
+          console.log('WindowClients', windowClients);
+          for (var i = 0; i < windowClients.length; i++) {
+            var client = windowClients[i];
+            console.log('WindowClient', client);
+            if (client.url === url && 'focus' in client) {
+              return client.focus();
+            }
+          }
+          if (clients.openWindow) {
+            return clients.openWindow(url);
+          }
+        })
+    );
+  });

@@ -6,7 +6,7 @@
  * - exposes the model to the template and provides event handlers
  */
 angular.module('todomvc')
-  .controller('TodoDetailCtrl', function TodoCtrl($scope, $routeParams, $filter, store) {
+  .controller('TodoDetailCtrl', function TodoCtrl($scope, $routeParams, $filter, $http, store) {
     'use strict';
     store.todos.forEach(function(todo) {
       if (todo.id == $routeParams.id) {
@@ -14,4 +14,23 @@ angular.module('todomvc')
         $scope.todo = todo;
       }
     });
+    
+    var toggle = document.querySelector("paper-toggle-button");
+    toggle.addEventListener('change', function () {
+      if (this.checked) {
+        $scope.$apply(function() {
+          $scope.todo.verified = true;
+        });
+        $http({
+          method: 'GET',
+          url: 'http://localhost:7777/notification/1'
+        });
+      } else {
+        $scope.$apply(function() {
+          $scope.todo.verified = false;
+        });
+      }
+      
+      store.put($scope.todo, store.todos.indexOf($scope.todo));
+    }); 
   });
