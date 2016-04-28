@@ -14,7 +14,7 @@ angular.module('todomvc')
     $scope.newTodo = {};
     $scope.editedTodo = null;
     
-    $scope.extraOptions = false;
+    $scope.showExtra = false;
     
     $scope.$watch('todos', function() {
       $scope.remainingCount = $filter('filter')(todos, { completed: false }).length;
@@ -30,8 +30,8 @@ angular.module('todomvc')
           { completed: true } : {};
     });
     
-    $scope.displayOptions = function() {
-      $scope.extraOptions = !$scope.extraOptions;
+    $scope.toggleOptions = function() {
+      $scope.showExtra = !$scope.showExtra;
     };
     
     function trim(text) {
@@ -48,7 +48,7 @@ angular.module('todomvc')
         description: trim($scope.newTodo.description),
         creationDate: new Date().getTime(),
         modifiedDate: new Date().getTime(),
-        foundInApp: trim($scope.newTodo.foundInApp),
+        foundInApp: document.querySelector('paper-dropdown-menu-light').value,
         foundinAppVersion: trim($scope.newTodo.foundinAppVersion),
         verified: false,
         completed: false
